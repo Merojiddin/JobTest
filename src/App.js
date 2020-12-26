@@ -1,6 +1,6 @@
 import Header from './Components/@common/header';
 import Footer from './Components/@common/footer';
-import Jobs from './Components/test/jobs'
+import Jobs from './Components/Home/jobs'
 
 function App() {
   return (
