@@ -21,7 +21,7 @@ const Jobs = () => {
  
   fetch(Api.base, {
     method: 'POST',
-    body:{
+    body: {
       "companySkills": true,
       "dismissedListingHashes": [],
       "fetchJobDesc": true,
@@ -29,8 +29,8 @@ const Jobs = () => {
       "locations": [],
       "numJobs": 20,
       "previousListingHashes": []
-    },
-  }).then(response => response.json())
+    }
+  }).then(response => console.log(response.json()))
   .then(json => console.log(json))
 
   return (
@@ -41,7 +41,17 @@ const Jobs = () => {
         <div className={classes.searchBar}> 
           <ul className={classes.searchBarContainer}>
             <li className={classes.searchBarItems}>
-              Company Name
+              <div className={classes.selectBtn}>
+                <select className={classes.select}>
+                  <option value="" className={classes.option}>Something</option>
+                  <option value="" className={classes.option}>1Something</option>
+                  <option value="" className={classes.option}>S2omething</option>
+                  <option value="" className={classes.option}>So3mething</option>
+                  <option value="" className={classes.option}>Som4ething</option>
+                  <option value="" className={classes.option}>Some5thing</option>
+                  <option value="" className={classes.option}>Somet7hing</option>
+                </select>
+              </div>
             </li>
             <li className={classes.searchBarItems}>
               Time
@@ -88,7 +98,32 @@ const useStyles = makeStyles(() => ({
   searchBarContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    
+  },
+  //Chosing a copmany
+  searchBarItems: {
+
+  },
+  selectBtn: {
+    position: 'relative',
+  },
+  select: {
+    //display: 'none',
+    '&selected': {
+      backgroundColor: 'green',
+      '&:after': {
+        position: 'absolute',
+        content: "",
+        top: 14,
+        right: 10,
+        width: 0,
+        height: 0,
+        border: '6px solid transparent',
+        borderColor: '#fff transparent transparent transparent',
+      }
+    } 
+  },
+  option: {
+
   },
 
   jobs:{
