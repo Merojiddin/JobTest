@@ -21,7 +21,7 @@ const Jobs = () => {
  
   fetch(Api.base, {
     method: 'POST',
-    body:JSON.stringify({
+    body:{
       "companySkills": true,
       "dismissedListingHashes": [],
       "fetchJobDesc": true,
@@ -29,10 +29,7 @@ const Jobs = () => {
       "locations": [],
       "numJobs": 20,
       "previousListingHashes": []
-    }),
-    headers:{
-      "Content-type": "aplication/json: charset=UTF-8"
-    }
+    },
   }).then(response => response.json())
   .then(json => console.log(json))
 
@@ -75,7 +72,7 @@ const useStyles = makeStyles(() => ({
     width: '100%'
   },
   container: {
-    maxWidth: 1180,
+    maxWidth: 1140,
     width: '100%',
     margin: 'auto',
     padding: '20px'
@@ -105,7 +102,7 @@ const useStyles = makeStyles(() => ({
     padding: '15px', 
     border: 'solid 2px #d8dee2',
     borderRadius: 5,
-    marginRight: '15px',
+    marginRight: '11px',
     marginBottom: '15px',
     transition: 'all 0.3s ease 0s',
     '&:hover': {

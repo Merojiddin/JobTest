@@ -72,6 +72,8 @@ const useStyles = makeStyles(() => ({
     border: 'none',
     cursor:'pointer',
     backgroundColor: 'Transparent',
+    width: 75,
+
     '&:hover': {
       backgroundColor: 'Transparent', 
       color: 'grey'
