@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { makeStyles } from "@material-ui/core";
 
 const Job = {
@@ -10,28 +10,27 @@ const Job = {
 }
 const array = [1,2,3,4,5,6,7,8,9,10]
 
-
 const Api = {
- base: 'https://www.zippia.com/api/jobs/'
+ base: 'https://www.zippia.com/api/jobs/',
+ body: {
+  "companySkills": true,
+  "dismissedListingHashes": [],
+  "fetchJobDesc": true,
+  "jobTitle": "",
+  "locations": [],
+  "numJobs": 20,
+  "previousListingHashes": []
+ }
 }
 
 const Jobs = () => {
   const classes = useStyles();
-  //const [query, setQuery] = useState('');
- 
+  console.log(Api)
+  
   fetch(Api.base, {
     method: 'POST',
-    body: {
-      "companySkills": true,
-      "dismissedListingHashes": [],
-      "fetchJobDesc": true,
-      "jobTitle": "Business Analyst",
-      "locations": [],
-      "numJobs": 20,
-      "previousListingHashes": []
-    }
-  }).then(response => console.log(response.json()))
-  .then(json => console.log(json))
+    body: Api.body
+  }).then(resopnse => resopnse.json()).then(data => console.log(data))
 
   return (
     <div className={classes.root}>
@@ -41,9 +40,10 @@ const Jobs = () => {
         <div className={classes.searchBar}> 
           <ul className={classes.searchBarContainer}>
             <li className={classes.searchBarItems}>
+              <p className={classes.selectBtnLabel}>Company Name</p>
               <div className={classes.selectBtn}>
                 <select className={classes.select}>
-                  <option value="" className={classes.option}>Something</option>
+                  <option value="" className={classes.option} >All</option>
                   <option value="" className={classes.option}>1Something</option>
                   <option value="" className={classes.option}>S2omething</option>
                   <option value="" className={classes.option}>So3mething</option>
@@ -54,7 +54,15 @@ const Jobs = () => {
               </div>
             </li>
             <li className={classes.searchBarItems}>
-              Time
+              <p className={classes.selectBtnLabel}>Time</p>
+              <div className={classes.selectBtn}>
+                <select className={classes.select}>
+                  <option value="" className={classes.option} >All</option>
+                  <option value="" className={classes.option}>Yesterday</option>
+                  <option value="" className={classes.option}>Last 3 days</option>
+                  <option value="" className={classes.option}>Last week</option>
+                </select>
+              </div>
             </li>
           </ul>
         </div>
@@ -93,7 +101,7 @@ const useStyles = makeStyles(() => ({
 
   },
   searchBar: {
-    margin: '20px 0px'
+    margin: '50px 0px'
   },
   searchBarContainer: {
     display: 'flex',
@@ -101,30 +109,33 @@ const useStyles = makeStyles(() => ({
   },
   //Chosing a copmany
   searchBarItems: {
+    marginRight: 20,
 
   },
   selectBtn: {
     position: 'relative',
   },
   select: {
-    //display: 'none',
-    '&selected': {
-      backgroundColor: 'green',
-      '&:after': {
-        position: 'absolute',
-        content: "",
-        top: 14,
-        right: 10,
-        width: 0,
-        height: 0,
-        border: '6px solid transparent',
-        borderColor: '#fff transparent transparent transparent',
-      }
-    } 
+    color: '#ffffff',
+    padding: '8px 16px',
+    backgroundColor: 'DodgerBlue',
+    border: '1px solid transparent',
+    borderColor: 'transparent transparent rgba(0, 0, 0, 0.1) transparent',
+    cursor: 'pointer',
+    userSelect: 'none',
+    outline: 'none',
+    fontSize: 18,
+    borderRadius: 5,
+    "&:hover": {
+      backgroundColor: 'rgba(30,144,255, 0.8)'
+    },
   },
   
   option: {
-
+    border: '2px solid blue',
+    "&:hover": {
+      backgroundColor: 'rgba(30,144,255, 0.2)'
+    }
   },
 
   jobs:{
