@@ -140,13 +140,29 @@ const Jobs = () => {
 
 const useStyles = makeStyles(() => ({
   root: {
-    width: '100%'
+    width: '100%',
+    minHeight: 800,
   },
   container: {
     maxWidth: 1140,
     width: '100%',
     margin: 'auto',
-    padding: '20px'
+    padding: '20px',
+    minWidth: 380,
+    ['@media (max-width:1179px)']: {
+      width: 920,
+      justifyContent: 'center',
+    },
+    ['@media (max-width:960px)']: {
+      width: 650,
+      justifyContent: 'center',
+      boxSizing: 'border-box'
+    },
+    ['@media (max-width:610px)']: {
+      width: '100%',
+      margin: 0,
+
+    },
   },
   mainTitle: {
     fontSize: 36,
@@ -163,6 +179,11 @@ const useStyles = makeStyles(() => ({
   //Chosing a copmany
   searchBarItems: {
     marginRight: 20,
+    ['@media (max-width:610px)']: {
+      width: '100%',
+      maxWidth: 600,
+      marginRight: 0,
+    },
 
   },
   selectBtn: {
@@ -183,6 +204,13 @@ const useStyles = makeStyles(() => ({
     "&:hover": {
       backgroundColor: 'rgba(30,144,255, 0.8)'
     },
+    ['@media (max-width:1179px)']: {
+      width: 440,
+    },
+    ['@media (max-width:610px)']: {
+      width: '100%',
+      maxWidth: 590,
+    },
   },
   
   option: {
@@ -196,6 +224,8 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     width: '100%',
     flexWrap: 'wrap',
+    justifyContent: 'center',
+    
   },
   jobContainer: {
     width: 240,
@@ -210,7 +240,15 @@ const useStyles = makeStyles(() => ({
     color: '#333333',
     '&:hover': {
       boxShadow: '0px 0px 9px 1px',
-    }
+    },
+    ['@media (max-width:1179px)']: {
+      width: 260,
+      justifyContent: 'spece-between',
+    },
+    ['@media (max-width:610px)']: {
+      width: '100%',
+    },
+
   },
   logoCompany: {
     width: 40, 
@@ -260,8 +298,6 @@ const useStyles = makeStyles(() => ({
     fontSize: 13
   },
   jobDescription: {
-    height: 190,
-    fontSize: 16,
   },
  
 }))

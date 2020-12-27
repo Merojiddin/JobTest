@@ -1,5 +1,6 @@
 import React from 'react'
 import { makeStyles } from "@material-ui/core";
+//import theme from '../../theme'
 
 
 
@@ -12,13 +13,13 @@ const Header = () => {
           <button className={`${classes.jobLogo} ${classes.btn}` }>Jobs</button>
         </div>
         <div className={classes.navBarContainer}>
-          <ul className={classes.navBar}>
+          {/* <ul className={classes.navBar}>
             <li className={classes.navBarItem}><a href="#" className={classes.navBarItemLink}>About</a></li>
             <li className={classes.navBarItem}><a href="#" className={classes.navBarItemLink}>Jobs</a></li>
             <li className={classes.navBarItem}><a href="#" className={classes.navBarItemLink}>Companies</a></li>
             <li className={classes.navBarItem}><a href="#" className={classes.navBarItemLink}>Contacts</a></li>
-          </ul>
-        </div>
+          </ul>*/}
+        </div> 
         <div className={classes.signUpInContainer}>
           <button className={`${classes.navBarSignIn} ${classes.btn}`}>Sign In</button>
           <button className={`${classes.navBarSignUp} ${classes.btn}`}>Sign Up</button>
@@ -29,7 +30,7 @@ const Header = () => {
 }
 
 //Just using makeStyles for making it easier to read
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     width: '100%',
     backgroundColor: '#2c2c2c',
@@ -37,12 +38,25 @@ const useStyles = makeStyles(() => ({
   },
   container: {
     maxWidth: 1140,
+    minWidth: 340,
     width: '100%',
     margin: '0px auto',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '15px 5%'
+    padding: '15px 0px',
+    ['@media (max-width:1179px)']: {
+      padding:  '15px 20px',
+      width: 920,
+    },
+    ['@media (max-width:960px)']: {
+      width: 610,
+    },
+    ['@media (max-width:650px)']: {
+      width: '100%',
+      maxWidth: 600,
+      
+    },
   },
   logoContainer: {
     height: 60,
