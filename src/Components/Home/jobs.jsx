@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core"
 import axios from 'axios'
+
+import {getRandomColor,createImageFromInitials} from '../@common/utils'
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([])
@@ -105,11 +107,24 @@ const Jobs = () => {
               }
             }
           })          
-          .map(({ jobId, jobTitle, jobDescription, companyName, postedDate }) => (
+          .map(({ jobId, jobTitle, jobDescription, companyName, postedDate, companyLogo, skillsets}) => (
             <div className={classes.jobContainer} key={jobId}>
+              <div>
+                <img src={
+                  companyLogo == undefined 
+                  ? createImageFromInitials(500, companyName, getRandomColor())
+                  : companyLogo
+                } alt="logo" className={classes.logoCompany}/>
+              </div>
               <h4 className={classes.jobCompany}>{companyName}</h4>
+              <p className={classes.jobType}>Remote</p>
               <h3 className={classes.jobTitle}>{jobTitle}</h3>
-              <h3 className={classes.jobTitle}>{postedDate}</h3>
+              <p className={classes.skillset}>
+                {skillsets.join(', ').length < 150 
+                ? skillsets.join(', ')
+                : skillsets.join(', ').slice(0, 150) + ' ...'
+              }</p>
+              <p className={classes.jobDate}>{postedDate}</p>
               <p className={classes.jobDescription}>
                 {jobDescription.length < 250 
                 ? jobDescription
@@ -191,20 +206,58 @@ const useStyles = makeStyles(() => ({
     marginRight: '11px',
     marginBottom: '15px',
     transition: 'all 0.3s ease 0s',
+    fontFamily: 'Open Sans',
+    color: '#333333',
     '&:hover': {
       boxShadow: '0px 0px 9px 1px',
     }
+  },
+  logoCompany: {
+    width: 40, 
+    height: 40,
+  },
+  jobType: {
+    color: 'rgba(51,51,51,.8)',
+    fontWeight: 400,
+    marginBottom: '6px',
+    lineHeight: '18px',
+    fontSize: '13px',
   },
   jobTitle: {
     fontWeight: 600,
     lineHeight: '18px',
     fontSize: 16,
-    marginBottom: 5,
+    marginTop: 6,
+    paddingBottom: '10px',
+    marginBottom: 10,
+    minHeight: '40px',
+    textOverflow: 'ellipsis',
+    overflowWrap: 'break-word',
+    borderBottom: '1px solid lightgray',
+    height: 55,
   },
   jobCompany: {
     fontWeight: 'bold',
-    fontSize: 28,
-    lineHeight: '36px',
+    fontSize: 13,
+    lineHeight: '18px',
+  },
+  skillset: {
+    color: 'rgba(51,51,51,.8)',
+    fontWeight: 400,
+    marginBottom: '6px',
+    lineHeight: '18px',
+    fontSize: '13px',
+    height: '85px',
+    textOverflow: 'ellipsis',
+    overflowWrap: 'break-word',
+    borderBottom: '1px solid lightgray',
+
+
+  },
+  jobDate: {
+    color: 'rgba(51,51,51,.8)',
+    fontWeight: 400,
+    fontSize: 13
   },
   jobDescription: {
     height: 190,
