@@ -24,7 +24,6 @@ const Jobs = () => {
       })
 
       setJobs(jobs)
-      console.log(jobs)
 
       //getting copmany names in one array
       jobs.map(({companyName}) => {
