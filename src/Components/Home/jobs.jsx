@@ -1,66 +1,70 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from "@material-ui/core";
-
-const Job = {
-  Title: 'Developer',
-  CompanyName: "Developed Company",
-  Description: `Rent out your parking space or your garage and earn $4,000+ / year!
-  We are looking for side hustlers and passive income lovers to join Neighbor as independent hosts
-  Neighbor connects hosts with unused space to renters in need of storage. Earn extra cash by renting out your empty space today! Neighbor is a great compliment to your dog walking, door dashing, airport driving, rv sharing, car sharing, or other side gig. Neighbor is a self-storage and parking community that allows`,
-}
-const array = [1,2,3,4,5,6,7,8,9,10]
-
-const Api = {
- base: 'https://www.zippia.com/api/jobs/',
- body: {
-  "companySkills": true,
-  "dismissedListingHashes": [],
-  "fetchJobDesc": true,
-  "jobTitle": "",
-  "locations": [],
-  "numJobs": 20,
-  "previousListingHashes": []
- }
-}
+import axios from 'axios'
 
 const Jobs = () => {
+  const [jobs, setJobs] = useState([])
+  const [searchedCompany, setSearchedCompany] = useState([])
+  const [companies, setCompanies] = useState([])
   const classes = useStyles();
-  console.log(Api)
+  let nameArray = []
+
+  useEffect(() => {
+    const init = async () => {
+      const { data: { jobs = [] } = {} } = await axios.post('https://www.zippia.com/api/jobs/', {
+        "companySkills": true,
+        "dismissedListingHashes": [],
+        "fetchJobDesc": true,
+        "jobTitle": "",
+        "locations": [],
+        "numJobs": 20,
+        "previousListingHashes": []
+      })
+
+      setJobs(jobs)
+      console.log(jobs)
+
+      //getting copmany names in one array
+      jobs.map(({companyName}) => {
+        if(!nameArray.includes(companyName)) {nameArray.push(companyName)}    
+        return nameArray;
+      })
+      setCompanies(nameArray)
+    }
+
+    init()
+  }, [])
   
-  fetch(Api.base, {
-    method: 'POST',
-    body: Api.body
-  }).then(resopnse => resopnse.json()).then(data => console.log(data))
+  const onChangeHandler = (event) => {
+    console.log(event.target.value)
+    setSearchedCompany(event.target.value)
+  }
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         <h1 className={classes.mainTitle}>Jobs For Me</h1>
-
         <div className={classes.searchBar}> 
           <ul className={classes.searchBarContainer}>
             <li className={classes.searchBarItems}>
-              <p className={classes.selectBtnLabel}>Company Name</p>
+              <p className={classes.selectBtnLabel}>Company Name</p >
               <div className={classes.selectBtn}>
-                <select className={classes.select}>
-                  <option value="" className={classes.option} >All</option>
-                  <option value="" className={classes.option}>1Something</option>
-                  <option value="" className={classes.option}>S2omething</option>
-                  <option value="" className={classes.option}>So3mething</option>
-                  <option value="" className={classes.option}>Som4ething</option>
-                  <option value="" className={classes.option}>Some5thing</option>
-                  <option value="" className={classes.option}>Somet7hing</option>
+                <select className={classes.select} onChange={onChangeHandler}>
+                  <option value="0" className={classes.option}>All</option>
+                  {companies.map((companyName, i) => ( 
+                    <option value={companyName} className={classes.option} key={i}>{companyName}</option> 
+                  ))}
                 </select>
               </div>
             </li>
             <li className={classes.searchBarItems}>
-              <p className={classes.selectBtnLabel}>Time</p>
+              <p className={classes.selectBtnLabel}>Time</p >
               <div className={classes.selectBtn}>
-                <select className={classes.select}>
-                  <option value="" className={classes.option} >All</option>
-                  <option value="" className={classes.option}>Yesterday</option>
-                  <option value="" className={classes.option}>Last 3 days</option>
-                  <option value="" className={classes.option}>Last week</option>
+                <select className={classes.select} onChange={onChangeHandler}>
+                  <option value="0" className={classes.option}  >All</option>
+                  <option value="1d ago" className={classes.option}>Yesterday</option>
+                  <option value="3d ago" className={classes.option}>Last 3 days</option>
+                  <option value="7d ago" className={classes.option}>Last week</option>
                 </select>
               </div>
             </li>
@@ -68,15 +72,49 @@ const Jobs = () => {
         </div>
 
         <div className={classes.jobs}>
-          {array.map((e) => (
-            <div className={classes.jobContainer} key={e}>
-              <h3 className={classes.jobTitle}>{Job.Title}</h3>
-              <h4 className={classes.jobCompany}>{Job.CompanyName}</h4>
+          {jobs.filter((value) => {
+            if (searchedCompany == "" || searchedCompany == "0") {
+              return value
+            } else if (value.companyName === searchedCompany) {
+              console.log('searched Value')
+              return value
+            } else if (searchedCompany == "7d ago") {
+                  if (value.postedDate == "6d ago" || 
+                      value.postedDate == "5d ago" ||
+                      value.postedDate == "4d ago" ||
+                      value.postedDate == "3d ago" ||
+                      value.postedDate == "2d ago" ||
+                      value.postedDate == "1d ago" ||
+                      value.postedDate == "0d ago"
+                      )  {
+                        return value
+                      }
+            }else if (searchedCompany == "3d ago") {
+              if (value.postedDate == "3d ago" ||
+                  value.postedDate == "2d ago" ||
+                  value.postedDate == "1d ago" ||
+                  value.postedDate == "0d ago"
+                  ) {
+                return value
+              }
+            } else if (searchedCompany == "1d ago") {
+              if (value.postedDate == "1d ago" ||
+                  value.postedDate == "0d ago"
+                  ) {
+                return value
+              }
+            }
+          })          
+          .map(({ jobId, jobTitle, jobDescription, companyName, postedDate }) => (
+            <div className={classes.jobContainer} key={jobId}>
+              <h4 className={classes.jobCompany}>{companyName}</h4>
+              <h3 className={classes.jobTitle}>{jobTitle}</h3>
+              <h3 className={classes.jobTitle}>{postedDate}</h3>
               <p className={classes.jobDescription}>
-                {Job.Description.length < 250 
-                ? Job.Description
-                : Job.Description.slice(0, 250) + ' ...' }
-              </p>
+                {jobDescription.length < 250 
+                ? jobDescription
+                : jobDescription.slice(0, 250) + ' ...' }
+              </p >
             </div>
           ))}
         </div>
@@ -126,6 +164,7 @@ const useStyles = makeStyles(() => ({
     outline: 'none',
     fontSize: 18,
     borderRadius: 5,
+    width: 400,
     "&:hover": {
       backgroundColor: 'rgba(30,144,255, 0.8)'
     },
@@ -157,16 +196,15 @@ const useStyles = makeStyles(() => ({
     }
   },
   jobTitle: {
+    fontWeight: 600,
+    lineHeight: '18px',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  jobCompany: {
     fontWeight: 'bold',
     fontSize: 28,
     lineHeight: '36px',
-
-  },
-  jobCompany: {
-    fontWeight: 300,
-    lineHeight: '18px',
-    fontSize: 14,
-    marginBottom: 5,
   },
   jobDescription: {
     height: 190,
